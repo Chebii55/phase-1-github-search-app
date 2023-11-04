@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded",()=>{
-    console.log("load is done!")
-
+  //  console.log("load is done!")
     const submit=document.querySelector("#github-form")
     submit.addEventListener("submit",(e)=>{
         e.preventDefault()
@@ -34,6 +33,29 @@ function searching(data){
          results.appendChild(profileView)
         
     });
-
 }
-});
+document.getElementById('user-list').addEventListener('click', findRepos)
+
+function findRepos() {
+
+    fetch(`https://api.github.com/users/${searchValue}/repos`)
+        .then(response => response.json())
+        .then(data => {
+            const reposList = document.querySelector('#repos-list');
+
+            data.forEach(repo => {
+                const repoName = document.createElement('h2');
+                const repoLink = document.createElement('a');
+
+                repoName.textContent = repo.name;
+                repoLink.href = repo.html_url;
+                repoLink.textContent = 'View Repo';
+
+                const repoContainer = document.createElement('li');
+                repoContainer.appendChild(repoName);
+                repoContainer.appendChild(repoLink);
+                reposList.appendChild(repoContainer);
+            })
+
+        })
+    }});
